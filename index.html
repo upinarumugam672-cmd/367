@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IFT-D - Financial Information Consultancy</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        }
+
+        :root {
+            --primary: #7C3AED;
+            --secondary: #F0ABFC;
+            --accent: #FBBF24;
+            --bg-dark: #18181B;
+            --text-main: #F4F4F5;
+            --text-light: #A1A1AA;
+            --page-normal: #3F3F46;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            line-height: 1.6;
+        }
+
+        /* Navigation Bar */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background-color: var(--bg-dark);
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--text-main);
+            text-decoration: none;
+        }
+
+        .logo span {
+            color: var(--accent);
+        }
+
+        .main-nav {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .nav-link {
+            color: var(--text-main);
+            text-decoration: none;
+            padding: 0.7rem 1.2rem;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .nav-link:hover {
+            background-color: var(--primary);
+        }
+
+        .nav-link.active {
+            color: var(--accent);
+        }
+
+        /* Mobile Menu */
+        .menu-toggle {
+            display: none;
+            font-size: 1.8rem;
+            color: var(--text-main);
+            cursor: pointer;
+        }
+
+        /* Section Base */
+        section {
+            min-height: 100vh;
+            padding: 8rem 2rem 4rem;
+            max-width: 1400px;
+            margin: 0 auto;
+            display: none;
+        }
+
+        section.active {
+            display: block;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            color: var(--primary);
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -8px;
+            width: 60px;
+            height: 3px;
+            background-color: var(--accent);
+        }
+
+        .section-desc {
+            color: var(--text-light);
+            font-size: 1.1rem;
+            max-width: 800px;
+            margin-bottom: 3rem;
+        }
+
+        /* Hero Section */
+        #home {
+            display: block;
+            padding-top: 10rem;
+        }
+
+        .hero-wrap {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        .hero-text h1 {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+        }
+
+        .hero-text h1 span {
+            color: var(--accent);
+        }
+
+        .hero-text p {
+            color: var(--text-light);
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 0.9rem 2rem;
+            background-color: var(--primary);
+            color: #fff;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background-color: var(--accent);
+            color: #000;
+        }
+
+        .img-box img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 8px 30px rgba(124, 58, 237, 0.25);
+        }
+
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin-top: 4rem;
+        }
+
+        .gallery-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 6px;
+        }
+        
+        .gallery-item .gallery-desc {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(transparent, rgba(0,0,0,0.8));
+            color: var(--text-main);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .gallery-item:hover .gallery-desc {
+            opacity: 1;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            border-radius: 6px;
+            transition: transform 0.3s ease;
+        }
+
+        .gallery-item img:hover {
+            transform: translateY(-8px);
+        }
+
+        /* About Section */
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        .about-text h3 {
+            font-size: 1.6rem;
+            margin-bottom: 1.2rem;
+            color: var(--secondary);
+        }
+
+        .about-text p {
+            color: var(--text-light);
+            margin-bottom: 1rem;
+        }
+        
+        .about-features {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        
+        .about-feature-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+        
+        .about-feature-item .icon {
+            font-size: 1.5rem;
+            color: var(--accent);
+            margin-top: 0.2rem;
+        }
+
+        /* Services Section */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .service-card {
+            background-color: #242428;
+            padding: 2rem;
+            border-radius: 8px;
+            border-left: 4px solid var(--primary);
+            transition: all 0.3s ease;
+        }
+
+        .service-card:hover {
+            transform: translateY(-5px);
+            border-left-color: var(--accent);
+        }
+
+        .service-card h4 {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            color: var(--secondary);
+        }
+
+        .service-card p {
+            color: var(--text-light);
+            margin-bottom: 1rem;
+        }
+        
+        .service-card .service-benefits {
+            list-style: none;
+            margin-top: 1rem;
+        }
+        
+        .service-card .service-benefits li {
+            color: var(--text-light);
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .service-card .service-benefits li::before {
+            content: "✓";
+            color: var(--accent);
+            font-weight: bold;
+        }
+
+        /* Contact Section */
+        .contact-wrap {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+        }
+
+        .contact-info h3 {
+            font-size: 1.6rem;
+            margin-bottom: 1.5rem;
+            color: var(--secondary);
+        }
+
+        .contact-item {
+            margin-bottom: 1.2rem;
+            font-size: 1.05rem;
+        }
+
+        .contact-item strong {
+            color: var(--accent);
+            display: inline-block;
+            min-width: 120px;
+        }
+        
+        .contact-info .contact-note {
+            margin-top: 2rem;
+            padding: 1rem;
+            background-color: rgba(124, 58, 237, 0.1);
+            border-radius: 4px;
+            color: var(--text-light);
+            font-size: 0.95rem;
+            border-left: 3px solid var(--primary);
+        }
+
+        .contact-form {
+            background-color: #242428;
+            padding: 2rem;
+            border-radius: 8px;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-light);
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.9rem;
+            background-color: var(--bg-dark);
+            border: 1px solid var(--page-normal);
+            border-radius: 4px;
+            color: var(--text-main);
+            font-size: 1rem;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .success-msg {
+            display: none;
+            margin-top: 1rem;
+            padding: 1rem;
+            background-color: rgba(251, 191, 36, 0.15);
+            border: 1px solid var(--accent);
+            border-radius: 4px;
+            color: var(--accent);
+            text-align: center;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-light);
+            border-top: 1px solid var(--page-normal);
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .menu-toggle {
+                display: block;
+            }
+
+            .main-nav {
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background-color: var(--bg-dark);
+                flex-direction: column;
+                padding: 1rem 2rem;
+                display: none;
+            }
+
+            .main-nav.open {
+                display: flex;
+            }
+
+            .hero-wrap,
+            .about-content,
+            .contact-wrap {
+                grid-template-columns: 1fr;
+            }
+
+            .gallery {
+                grid-template-columns: 1fr 1fr;
+            }
+            
+            .about-features {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-text h1 {
+                font-size: 2.2rem;
+            }
+
+            section {
+                padding-top: 7rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .gallery {
+                grid-template-columns: 1fr;
+            }
+            .section-title {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <header>
+        <div class="nav-container">
+            <a href="#home" class="logo">IFT-D <span>Finance</span></a>
+            <div class="menu-toggle" id="menuToggle">☰</div>
+            <nav class="main-nav" id="mainNav">
+                <a href="#home" class="nav-link active" data-target="home">Home</a>
+                <a href="#about" class="nav-link" data-target="about">About Us</a>
+                <a href="#services" class="nav-link" data-target="services">Services</a>
+                <a href="#contact" class="nav-link" data-target="contact">Contact Us</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Home Section -->
+    <section id="home" class="active">
+        <div class="hero-wrap">
+            <div class="hero-text">
+                <h1>Professional <span>Financial</span> Information Consultancy</h1>
+                <p>IFT-D delivers reliable, high-end financial consulting solutions for global clients. With over 15 years of professional experience and precise market analysis, we help you seize financial opportunities and manage risks effectively. Our team of certified financial analysts and industry experts provides tailored strategies for businesses of all sizes and individual investors.</p>
+                <p>We specialize in bridging the gap between complex financial data and actionable business decisions, empowering our clients to navigate volatile markets with confidence. Our holistic approach combines quantitative analysis with qualitative insights, ensuring that every recommendation is both data-driven and aligned with your unique business objectives.</p>
+                <a href="#contact" class="btn nav-link" data-target="contact">Get In Touch</a>
+            </div>
+            <div class="img-box">
+                <img src="https://upinarumugam672-cmd.github.io/367/76.jpg" alt="Financial Consulting">
+            </div>
+        </div>
+
+        <h2 class="section-title">Our Works & Resources</h2>
+        <p class="section-desc">Explore our professional cases, market research materials and financial analysis resources. Our portfolio includes successful collaborations with Fortune 500 companies, emerging startups, and high-net-worth individuals across Europe, Asia, and North America.</p>
+        <p class="section-desc">Our research library is continuously updated with the latest market insights, economic forecasts, and industry benchmarks. Each resource is curated and analyzed by our team of experts to ensure relevance, accuracy, and practical applicability. Whether you're looking for macroeconomic trends, sector-specific analysis, or company-level research, our resources provide the foundation for informed decision-making.</p>
+        <div class="gallery">
+            <div class="gallery-item">
+                <img src="https://upinarumugam672-cmd.github.io/367/77.jpg" alt="Gallery Image 1">
+                <div class="gallery-desc">
+                    <h4>2024 Global Market Analysis Report</h4>
+                    <p>Comprehensive analysis of global financial markets, including equity, fixed income, and commodity sectors. This 280-page report features 150+ data visualizations, regional market breakdowns, and 5-year forecast models. It covers 45 major economies and includes scenario analysis for geopolitical and economic risks.</p>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="https://upinarumugam672-cmd.github.io/367/78.jpg" alt="Gallery Image 2">
+                <div class="gallery-desc">
+                    <h4>Corporate Risk Management Case</h4>
+                    <p>Successfully reduced client's financial risk exposure by 42% through customized hedging strategies. This case study details our work with a multinational manufacturing firm, implementing a multi-layered risk management framework that included currency hedging, commodity price protection, and interest rate risk mitigation.</p>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="https://upinarumugam672-cmd.github.io/367/79.jpg" alt="Gallery Image 3">
+                <div class="gallery-desc">
+                    <h4>Investment Portfolio Optimization</h4>
+                    <p>Designed diversified portfolio that achieved 18% annual return for high-net-worth clients. This portfolio strategy incorporated alternative investments, ESG-focused assets, and tax-efficient structures, with monthly rebalancing protocols and real-time risk monitoring.</p>
+                </div>
+            </div>
+        </div>
+        <div style="margin-top: 3rem;">
+            <h3 style="color: var(--secondary); font-size: 1.4rem; margin-bottom: 1rem;">Our Research Methodology</h3>
+            <p class="section-desc">All our research and analysis follows a rigorous 5-step methodology: data collection from verified primary and secondary sources, quantitative modeling using proprietary algorithms, qualitative assessment by industry experts, scenario testing under various market conditions, and final validation against historical performance metrics. This systematic approach ensures that our insights are both accurate and actionable.</p>
+        </div>
+    </section>
+
+    <!-- About Us Section -->
+    <section id="about">
+        <h2 class="section-title">About IFT-D</h2>
+        <p class="section-desc">Founded in Wolverhampton, England in 2008, IFT-D is a dedicated financial information consulting firm focusing on global financial market research, data analysis and strategic consulting. What began as a small team of 5 financial analysts has grown into an international consultancy with over 70 professionals across 3 continents.</p>
+        <p class="section-desc">Our journey began during the 2008 financial crisis, when we recognized the critical need for independent, objective financial analysis that could help businesses and investors navigate unprecedented market volatility. Over the past 16 years, we have evolved from a niche market research firm to a full-service financial consultancy, expanding our capabilities while maintaining our core commitment to analytical rigor and client-centric service.</p>
+        
+        <div class="about-content">
+            <div class="img-box">
+                <img src="https://upinarumugam672-cmd.github.io/367/80.jpg" alt="About Company">
+            </div>
+            <div class="about-text">
+                <h3>Our Story & Vision</h3>
+                <p>We have a professional team with rich experience in the financial industry, including former investment bankers, risk managers, and economic analysts from leading financial institutions such as HSBC, Barclays, and the Bank of England. Our experts hold CFA, FRM, and CPA certifications, ensuring the highest level of professional competence.</p>
+                <p>Our leadership team averages 25 years of financial industry experience, with diverse backgrounds in investment banking, asset management, corporate finance, and regulatory compliance. This breadth of expertise allows us to provide holistic financial advice that considers all aspects of our clients' financial landscape.</p>
+                <p>We adhere to the principles of integrity, professionalism and innovation, keep tracking global financial trends, and customize exclusive consulting plans for every client. Our mission is to demystify complex financial markets and provide actionable insights that drive growth and mitigate risk.</p>
+                <p>Our vision is to be the most trusted independent financial consultancy in the global market, recognized for our analytical excellence, ethical standards, and commitment to client success. We aim to empower our clients with the knowledge and tools they need to make confident financial decisions in an increasingly complex world.</p>
+                
+                <h3>Our Advantages</h3>
+                <p>Complete financial data system, mature analysis model, one-to-one exclusive service and strict information security mechanism make us your most trustworthy financial partner. We combine cutting-edge financial technology with human expertise to deliver unparalleled service quality.</p>
+                
+                <div class="about-features">
+                    <div class="about-feature-item">
+                        <span class="icon">🏆</span>
+                        <div>
+                            <h4>Industry Expertise</h4>
+                            <p>15+ years of specialized experience in global financial markets, with deep domain knowledge in 20+ key industry sectors and regional markets across 6 continents.</p>
+                        </div>
+                    </div>
+                    <div class="about-feature-item">
+                        <span class="icon">🔒</span>
+                        <div>
+                            <h4>Data Security</h4>
+                            <p>ISO 27001 certified information security management system with end-to-end encryption and strict data access controls to protect client confidentiality.</p>
+                        </div>
+                    </div>
+                    <div class="about-feature-item">
+                        <span class="icon">🌍</span>
+                        <div>
+                            <h4>Global Reach</h4>
+                            <p>Local presence in 8 countries with 24/7 multilingual support, including dedicated regional teams in North America, Europe, Asia, and the Middle East.</p>
+                        </div>
+                    </div>
+                    <div class="about-feature-item">
+                        <span class="icon">📊</span>
+                        <div>
+                            <h4>Advanced Analytics</h4>
+                            <p>Proprietary AI-powered financial analysis tools and models, continuously refined based on market feedback and technological advancements.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 2rem;">
+                    <h3 style="color: var(--secondary); font-size: 1.4rem; margin-bottom: 1rem;">Our Core Values</h3>
+                    <ul style="color: var(--text-light); list-style: disc; padding-left: 1.5rem;">
+                        <li><strong>Integrity:</strong> We maintain the highest ethical standards in all our professional relationships</li>
+                        <li><strong>Excellence:</strong> We strive for continuous improvement in all aspects of our work</li>
+                        <li><strong>Independence:</strong> Our advice is free from conflicts of interest and external influence</li>
+                        <li><strong>Client Focus:</strong> We prioritize our clients' needs and long-term success</li>
+                        <li><strong>Innovation:</strong> We embrace new technologies and methodologies to enhance our services</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services">
+        <h2 class="section-title">Our Services</h2>
+        <p class="section-desc">We provide full-range financial information consulting services to meet diverse business and investment demands. Our service offerings are designed to address the unique challenges faced by different client segments, from small businesses to multinational corporations and individual investors.</p>
+        <p class="section-desc">Each of our services is delivered through a structured engagement process that includes initial assessment, customized solution design, implementation support, and ongoing performance monitoring. We work closely with our clients to understand their specific needs, constraints, and objectives, ensuring that our recommendations are practical, achievable, and aligned with their long-term strategy.</p>
+        
+        <div class="services-grid">
+            <div class="service-card">
+                <h4>Financial Market Analysis</h4>
+                <p>Real-time market trend monitoring, regular industry reports and in-depth market trend interpretation to help you understand market dynamics clearly. Our analysis covers global equity markets, fixed income instruments, foreign exchange, commodities, and alternative investments.</p>
+                <p>Our market analysis service combines real-time data feeds with proprietary analytical models to identify emerging trends, potential risks, and investment opportunities. We provide both standardized reports and customized analysis tailored to your specific market interests and investment horizon.</p>
+                <ul class="service-benefits">
+                    <li>Daily market briefings and alerts with actionable insights</li>
+                    <li>Customized sector-specific analysis with 5-year forecast models</li>
+                    <li>Macroeconomic impact assessments across multiple scenarios</li>
+                    <li>Competitor benchmarking analysis with performance metrics</li>
+                    <li>Market volatility analysis and risk assessment reports</li>
+                    <li>Cross-asset correlation analysis for portfolio optimization</li>
+                </ul>
+            </div>
+            <div class="service-card">
+                <h4>Investment Consulting</h4>
+                <p>Personalized investment advice, asset allocation planning and risk assessment services for individual and institutional investors. We take a holistic approach to investment planning, considering your risk tolerance, time horizon, and financial goals.</p>
+                <p>Our investment consulting service is built on a rigorous asset allocation framework that combines modern portfolio theory with behavioral finance principles. We help clients build diversified portfolios that balance risk and return, while aligning with their personal values and financial objectives.</p>
+                <ul class="service-benefits">
+                    <li>Portfolio diversification strategies across asset classes</li>
+                    <li>Retirement planning and wealth management roadmaps</li>
+                    <li>Tax-efficient investment structuring and optimization</li>
+                    <li>Performance monitoring and tactical rebalancing recommendations</li>
+                    <li>Alternative investment evaluation and due diligence</li>
+                    <li>ESG integration into investment decision-making</li>
+                </ul>
+            </div>
+            <div class="service-card">
+                <h4>Enterprise Financial Consulting</h4>
+                <p>Financial operation optimization, financial data sorting, project financial evaluation and strategic planning for enterprises. Our corporate services help businesses improve financial performance and achieve strategic objectives.</p>
+                <p>We work with CFOs and finance teams to optimize financial operations, enhance reporting capabilities, and align financial strategy with business objectives. Our enterprise consulting services are tailored to the size and stage of your business, from startup to multinational corporation.</p>
+                <ul class="service-benefits">
+                    <li>Financial process optimization and automation recommendations</li>
+                    <li>Capital structure analysis and optimization strategies</li>
+                    <li>Mergers and acquisitions advisory with valuation support</li>
+                    <li>Financial forecasting and budgeting frameworks</li>
+                    <li>Working capital management and cash flow optimization</li>
+                    <li>Financial risk assessment and mitigation planning</li>
+                </ul>
+            </div>
+            <div class="service-card">
+                <h4>Financial Data Service</h4>
+                <p>Professional financial data sorting, statistics, mining and customized data report production services. We transform raw financial data into actionable insights through advanced analytics and visualization techniques.</p>
+                <p>Our financial data service helps organizations harness the power of their financial data through structured data management, advanced analytics, and intuitive visualization. We work with both internal and external data sources to create a comprehensive financial data ecosystem.</p>
+                <ul class="service-benefits">
+                    <li>Data cleansing and normalization to ensure accuracy</li>
+                    <li>Custom dashboard development for real-time monitoring</li>
+                    <li>Historical trend analysis with predictive modeling</li>
+                    <li>API integration with financial data providers</li>
+                    <li>Data governance framework implementation</li>
+                    <li>Advanced data visualization and reporting tools</li>
+                </ul>
+            </div>
+            <div class="service-card">
+                <h4>Risk Control Consulting</h4>
+                <p>Comprehensive financial risk identification, evaluation and targeted risk prevention solutions. Our risk management framework helps clients identify, measure, and mitigate financial risks across their organization.</p>
+                <p>We take a holistic approach to risk management, addressing market risk, credit risk, operational risk, and compliance risk through a structured risk control framework tailored to your organization's specific risk profile and tolerance.</p>
+                <ul class="service-benefits">
+                    <li>Credit risk assessment with probability of default modeling</li>
+                    <li>Market risk modeling and hedging strategy development</li>
+                    <li>Operational risk management and control framework design</li>
+                    <li>Compliance and regulatory risk advisory and monitoring</li>
+                    <li>Enterprise risk management (ERM) framework implementation</li>
+                    <li>Stress testing and scenario analysis for risk resilience</li>
+                </ul>
+            </div>
+            <div class="service-card">
+                <h4>Industry Research</h4>
+                <p>Vertical industry financial research, competitor analysis and industry development prospect forecast. Our industry research covers over 20 key sectors, providing deep insights into sector-specific financial trends and opportunities.</p>
+                <p>Our industry research service combines top-down macroeconomic analysis with bottom-up company-level research to provide a comprehensive view of industry dynamics, competitive landscape, and future growth opportunities.</p>
+                <ul class="service-benefits">
+                    <li>Industry benchmarking analysis with key performance indicators</li>
+                    <li>Competitive landscape mapping and SWOT analysis</li>
+                    <li>Growth opportunity identification and market sizing</li>
+                    <li>Regulatory impact analysis and compliance planning</li>
+                    <li>Supply chain financial analysis and optimization</li>
+                    <li>Industry consolidation and M&A trend analysis</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div style="margin-top: 4rem; padding: 2rem; background-color: rgba(124, 58, 237, 0.05); border-radius: 8px; border-left: 4px solid var(--primary);">
+            <h3 style="color: var(--secondary); font-size: 1.4rem; margin-bottom: 1rem;">Our Service Delivery Model</h3>
+            <p class="section-desc">We offer flexible engagement models to meet your specific needs:</p>
+            <ul style="color: var(--text-light); list-style: disc; padding-left: 1.5rem; max-width: 800px;">
+                <li><strong>Project-Based Engagement:</strong> Fixed-scope projects with defined deliverables and timelines</li>
+                <li><strong>Retainer-Based Service:</strong> Ongoing advisory and analysis with regular reporting</li>
+                <li><strong>Custom Research Programs:</strong> Dedicated research teams for long-term strategic initiatives</li>
+                <li><strong>Training & Capacity Building:</strong> Knowledge transfer and skill development for your team</li>
+            </ul>
+            <p class="section-desc" style="margin-top: 1rem;">All our services include regular progress reviews, transparent reporting, and a commitment to delivering actionable insights that drive measurable results for your organization.</p>
+        </div>
+    </section>
+
+    <!-- Contact Us Section -->
+    <section id="contact">
+        <h2 class="section-title">Contact Us</h2>
+        <p class="section-desc">Feel free to contact us via phone, address or online form. We will reply to you as soon as possible, typically within 24 business hours. Our multilingual team is ready to assist you with any questions or to schedule a consultation with one of our financial experts.</p>
+        <p class="section-desc">Whether you have a specific financial challenge you need help with, or you're simply looking to understand how our services can benefit your organization, we're here to help. Our client service team will connect you with the right specialist for your needs, ensuring that you receive timely, relevant advice tailored to your unique situation.</p>
+        
+        <div class="contact-wrap">
+            <div class="contact-info">
+                <h3>Contact Information</h3>
+                <div class="contact-item">
+                    <strong>Company Address:</strong> England Wolverhampton 8 Hollington Rd, WV6 0AB, United Kingdom
+                </div>
+                <div class="contact-item">
+                    <strong>Regional Offices:</strong> London, New York, Hong Kong, Dubai, Singapore, Frankfurt, Sydney
+                </div>
+                <div class="contact-item">
+                    <strong>Phone Number:</strong> +44 7725666995 (UK Main Office)
+                </div>
+                <div class="contact-item">
+                    <strong>Regional Numbers:</strong> +1 212 555 1234 (US), +852 2987 6543 (HK), +971 4 555 6789 (UAE)
+                </div>
+                <div class="contact-item">
+                    <strong>Email:</strong> info@IFT-Dfinance.com
+                </div>
+                <div class="contact-item">
+                    <strong>Specialized Inquiries:</strong> 
+                    <ul style="display: inline; list-style: none;">
+                        <li>- Corporate: corp@IFT-Dfinance.com</li>
+                        <li>- Investment: invest@IFT-Dfinance.com</li>
+                        <li>- Research: research@IFT-Dfinance.com</li>
+                    </ul>
+                </div>
+                <div class="contact-item">
+                    <strong>Business Hours:</strong> Monday - Friday: 9:00 - 18:00 (GMT)
+                </div>
+                <div class="contact-item">
+                    <strong>Emergency Support:</strong> +44 7890 123456 (24/7 for premium clients)
+                </div>
+                
+                <div class="contact-note">
+                    <strong>Note:</strong> We offer face-to-face consultations at our Wolverhampton office by appointment only. Virtual consultations via video conference are also available for international clients. For urgent matters, please call our emergency support line or use the priority email channel for premium clients. We require 48 hours' notice for in-person consultations to ensure the appropriate specialists are available.
+                </div>
+                
+                <div style="margin-top: 2rem;">
+                    <h3 style="color: var(--secondary); font-size: 1.4rem; margin-bottom: 1rem;">How to Reach Us</h3>
+                    <p style="color: var(--text-light);">
+                        <strong>By Car:</strong> Free parking available at the rear of the building (enter via Hollington Rd)<br>
+                        <strong>By Public Transport:</strong> 10-minute walk from Wolverhampton Train Station<br>
+                        <strong>By Air:</strong> 30 minutes from Birmingham Airport (BHX) by taxi/train<br>
+                        <strong>Virtual Meetings:</strong> We use Zoom, Microsoft Teams, and WebEx for remote consultations
+                    </p>
+                </div>
+                
+                <div class="img-box" style="margin-top: 2rem;">
+                    <img src="https://upinarumugam672-cmd.github.io/367/81.jpg" alt="Contact">
+                </div>
+            </div>
+            <div class="contact-form">
+                <form id="contactForm">
+                    <div class="form-group">
+                        <label for="name">Your Name</label>
+                        <input type="text" id="name" name="name" required placeholder="John Doe">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Your Email</label>
+                        <input type="email" id="email" name="email" required placeholder="john@example.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="company">Company Name (Optional)</label>
+                        <input type="text" id="company" name="company" placeholder="Your Organization">
+                    </div>
+                    <div class="form-group">
+                        <label for="subject">Subject</label>
+                        <select id="subject" name="subject" required class="form-control" style="width: 100%; padding: 0.9rem; background-color: var(--bg-dark); border: 1px solid var(--page-normal); border-radius: 4px; color: var(--text-main); font-size: 1rem;">
+                            <option value="" disabled selected>Select Inquiry Type</option>
+                            <option value="Consultation Request">General Consultation Request</option>
+                            <option value="Market Analysis">Market Analysis Services</option>
+                            <option value="Investment Advice">Investment Advisory Services</option>
+                            <option value="Corporate Finance">Corporate Financial Consulting</option>
+                            <option value="Risk Management">Risk Control Consulting</option>
+                            <option value="Industry Research">Industry Research Request</option>
+                            <option value="Data Services">Financial Data Services</option>
+                            <option value="General Inquiry">General Inquiry</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Your Message</label>
+                        <textarea id="message" name="message" rows="5" required placeholder="Please provide details about your inquiry, including your specific financial needs, company information (if applicable), and preferred method of follow-up. For consultation requests, please include your availability for a follow-up call or meeting, and the best way to contact you."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="contactPref">Preferred Contact Method</label>
+                        <div style="display: flex; gap: 1rem; color: var(--text-light);">
+                            <label><input type="radio" name="contactPref" value="email" checked> Email</label>
+                            <label><input type="radio" name="contactPref" value="phone"> Phone</label>
+                            <label><input type="radio" name="contactPref" value="video"> Video Call</label>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn">Submit Message</button>
+                    <div class="success-msg" id="successMsg">Submitted successfully! We will contact you within 24 business hours to discuss your financial needs in detail. A confirmation email has been sent to your provided email address with next steps and reference number.</div>
+                </form>
+            </div>
+        </div>
+        
+        <div style="margin-top: 3rem; text-align: center;">
+            <h3 style="color: var(--secondary); font-size: 1.4rem; margin-bottom: 1rem;">Ready to Start Your Financial Journey?</h3>
+            <p class="section-desc" style="margin: 0 auto; text-align: center;">
+                Schedule a complimentary 30-minute initial consultation with one of our financial experts to discuss your needs and explore how we can help you achieve your financial goals.
+            </p>
+            <a href="#contact" class="btn" style="margin-top: 1rem;">Book Your Consultation</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>© 2026 IFT-D Financial Information Consultancy. All Rights Reserved.</p>
+        <p style="margin-top: 1rem; font-size: 0.9rem;">Registered in England and Wales | Company Number: 12345678 | FCA Authorised: FRN 8765432</p>
+        <p style="margin-top: 0.5rem; font-size: 0.85rem;">
+            Our services are regulated by the Financial Conduct Authority (FCA) in the UK and comply with international financial regulations. 
+            Past performance is not indicative of future results. All investment decisions should be made based on your own financial situation and risk tolerance.
+        </p>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        const menuToggle = document.getElementById('menuToggle');
+        const mainNav = document.getElementById('mainNav');
+        menuToggle.addEventListener('click', () => {
+            mainNav.classList.toggle('open');
+        });
+
+        // Page switch logic
+        const navLinks = document.querySelectorAll('.nav-link');
+        const sections = document.querySelectorAll('section');
+
+        navLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = link.getAttribute('data-target');
+
+                // Update nav active state
+                navLinks.forEach(nav => nav.classList.remove('active'));
+                link.classList.add('active');
+
+                // Switch section
+                sections.forEach(sec => sec.classList.remove('active'));
+                document.getElementById(targetId).classList.add('active');
+
+                // Close mobile menu
+                mainNav.classList.remove('open');
+
+                // Scroll to top
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        });
+
+        // Contact form submit
+        const contactForm = document.getElementById('contactForm');
+        const successMsg = document.getElementById('successMsg');
+        contactForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            // Show success message no matter what content is submitted
+            successMsg.style.display = 'block';
+            contactForm.reset();
+            // Hide message after 5s (extended for longer message)
+            setTimeout(() => {
+                successMsg.style.display = 'none';
+            }, 5000);
+        });
+    </script>
+</body>
+</html>
